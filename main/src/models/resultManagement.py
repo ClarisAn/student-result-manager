@@ -20,9 +20,11 @@ class ResultsManager():
         # Check that name, surname or email exists before adding score
         responseStudent = self.check_student_exists(name, surname, email)
         responseCourse = self.check_course_exists(code, course)
+        responseResult = self.check_result_exists(code, email)
 
         # Only is all parameters are valid, create student entry in DB
-        if (responseStudent['status'] == "SUCCESS") and (responseCourse['status'] == "SUCCESS"):
+        if (responseStudent['status'] == "SUCCESS") and (responseCourse['status'] == "SUCCESS") and (
+                responseResult['status'] == "SUCCESS"):
 
             logging.info("User and Course information is valid")
 
@@ -117,6 +119,30 @@ class ResultsManager():
 
     def check_course_exists(self, code, course):
         logging.info("ENTERING check_course_exists")
+        response = {"status": "FAILED", "message": "Course does not exist"}
+
+        # Call the database class
+        logging.info("Calling database connector class...")
+
+        database = Database(user=os.environ['dbUserName'],
+                            password=os.environ['dbPwd'],
+                            host=os.environ['dbHost'],
+                            database=os.environ['dbName'],
+                            port=os.environ['dbPort'],
+                            reconnect="False")
+
+        data = database.execute_result(
+            "SELECT * FROM courses WHERE UPPER(code)=UPPER('{}') AND LOWER(course)=LOWER('{}') ;".format(code, course))
+
+        if len(data) >= 1:
+            logging.error("Course exists")
+            response['status'] = 'SUCCESS'
+            response['message'] = ''
+        logging.info("EXITING check_course_exists")
+        return response
+
+    def check_result_exists(self, code, email):
+        logging.info("ENTERING check_result_exists")
         response = {"status": "SUCCESS", "message": ""}
 
         # Call the database class
@@ -130,11 +156,11 @@ class ResultsManager():
                             reconnect="False")
 
         data = database.execute_result(
-            "SELECT * FROM results WHERE UPPER(code)=UPPER('{}') AND LOWER(course)=LOWER('{}') ;".format(code, course))
-
-        if len(data) != 1:
-            logging.error("Course does not exist.")
+            "SELECT * FROM results WHERE UPPER(code)=UPPER('{}') AND LOWER(email)=LOWER('{}') ;".format(code, email))
+        logging.debug("There exists: {} entries".format(str(len(data))))
+        if len(data) >= 1:
+            logging.error("Result Already Exists.")
             response['message'] = "Course does not exist."
             response['status'] = 'FAILED'
-        logging.info("EXITING check_course_exists")
+        logging.info("EXITING check_result_exists")
         return response
