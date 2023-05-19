@@ -59,8 +59,8 @@ Optional
    ```sql
     CREATE TABLE students (
     email VARCHAR ( 255 ) PRIMARY KEY,
-    firstName VARCHAR ( 255 ) UNIQUE NOT NULL,
-    surName VARCHAR ( 255 ) UNIQUE NOT NULL,
+    firstName VARCHAR ( 255 ) NOT NULL,
+    surName VARCHAR ( 255 ) NOT NULL,
     dob date NOT NULL); 
 
     CREATE TABLE course (
@@ -88,24 +88,27 @@ dbPort=portNo
 
 Structure
 
-├──  student-result-manager                   
-│   ├── .env       
-│                  
+```project
++-- student-result-manager
+|   +-- .env
+```       
+                  
  
 ### Usage
 
 #### bash
 1. Start the Flask App:
 
-   ```bash
+```bash
    python3 app.py
-   ```
+```
 
 2. By default, the application will run on `http://localhost:5050/`.
 
 3. Access the application in your web browser or on Postman etc.
 
 #### docker (OPTIONAL)
+Note steps 1 & 2 are just for context. Execute step 3 to build and run docker container
 
 1. Run the dockerfile to build container
 
@@ -113,10 +116,11 @@ Structure
    docker build --tag python-docker .
 ```
 2. Run container
+
 ```bash
     docker run -p 5050:5050 -d python-docker
 ```
-3. Alternatively, run the docker-compose.yml
+3. Run the docker-compose.yml as it creates
    
 ```bash
   docker-compose build
