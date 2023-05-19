@@ -1,4 +1,3 @@
-import os
 import logging
 from main.main import app
 
@@ -6,5 +5,4 @@ from main.main import app
 
 if __name__ == '__main__':
     logging.info('Starting Application...')
-    port = os.environ.get("PORT", 5050)
-    app.run(host='0.0.0.0', port=port, debug=True)
+    app.run(host='0.0.0.0', port=5050, debug=True)

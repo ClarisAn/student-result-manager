@@ -14,6 +14,8 @@ Before running the Flask app, make sure you have the following installed:
 - Flask
 - PostgresSQL
 
+Optional
+- Docker
 
 ### Installation
 
@@ -44,7 +46,7 @@ Before running the Flask app, make sure you have the following installed:
 5. Install the required dependencies:
 
    ```bash
-   pip install -r requirements.txt
+   pip3 install -r requirements.txt
    ```
 
 6. Set up the PostgreSQL database:
@@ -53,7 +55,7 @@ Before running the Flask app, make sure you have the following installed:
    - Update the database configuration with your PostgreSQL credentials and database information.
 
 7. Set up database:
-   1. Create the database tables using the provided schemas
+   Create the database tables using the provided schemas
    ```sql
     CREATE TABLE students (
     email VARCHAR ( 255 ) PRIMARY KEY,
@@ -72,51 +74,55 @@ Before running the Flask app, make sure you have the following installed:
     code VARCHAR ( 6 )  NOT NULL,
     student  VARCHAR ( 255 ) NOT NULL,
     score VARCHAR ( 1 ) NOT NULL);
-    ```
-   2. Or, run the following commands
-
-   ```bash
-   flask db init
-   flask db migrate
-   flask db upgrade
    ```
 
-8. SetUp Environment Variables 
+8. SetUp Environment Variables. Create a file .env
 
 ```bash
-dbName=postgres
-dbPwd=***
-dbUserName=postgres
-dbHost=localhost
-dbPort=5433
+dbName=pgName
+dbPwd=pgPassword
+dbUserName=pgName
+dbHost=host
+dbPort=portNo
 ```
+
+Structure
+
+├──  student-result-manager                   
+│   ├── .env       
+│                  
+ 
 ### Usage
 
 #### bash
 1. Start the Flask development server:
 
    ```bash
-   python app.py
+   python3 app.py
    ```
 
 2. By default, the application will run on `http://localhost:5050/`.
 
 3. Access the application in your web browser.
 
-#### docker
+#### docker (OPTIONAL)
 
-1. Run the dockerfile
-
-```bash
-   docker run 
-```
-
-#### flask
-1.  Start the Flask development server:
+1. Run the dockerfile to build container
 
 ```bash
-flask run
+   docker build --tag python-docker .
 ```
+2. Run container
+```bash
+    docker run -p 5050:5050 -d python-docker
+```
+3. However, run the docker-compose.yml file
+to use env variables in docker container
+   
+```bash
+  docker-compose build
+  docker-compose up
+````
 
 ### Features
 
@@ -138,6 +144,7 @@ Contributions are welcome! If you find any issues or want to enhance the applica
    Different user roles with appropriate permissions.
 2. Functional tests
 3. Performance test
+4. "Dockerize" app to include postgres image
 
 
 ### Contact

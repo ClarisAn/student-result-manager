@@ -1,0 +1,19 @@
+# docker-compose.yaml
+version: '3'
+
+services:
+  web:
+    build: .
+    command: flask run
+    volumes:
+      - type: bind
+        source: .
+        target: /code
+    environment:
+      - ENV FLASK_APP=app.py
+        ENV FLASK_RUN_HOST=0.0.0.0
+    ports:
+      - target: 5050
+        published: 5050
+    env_file:
+      - .env
