@@ -40,7 +40,6 @@ class CourseManager():
             database.execute(
                 "INSERT INTO courses(code, course) VALUES('{}', '{}');".format(code, course))
             database.close()
-
         logging.info("EXITING create_student_info")
         return response
 
@@ -86,7 +85,6 @@ class CourseManager():
         else:
             response["status"] = "FAILED"
             response["message"] = "Course Code is Not Valid"
-
         logging.info("EXITING delete_student")
         return response
 
