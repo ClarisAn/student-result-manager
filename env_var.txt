@@ -1,6 +1,6 @@
 PYTHONUNBUFFERED=1
 dbName=postgres
-dbPwd=Clarissa123!
+dbPwd=***
 dbUserName=postgres
 dbHost=localhost
 dbPort=5433
