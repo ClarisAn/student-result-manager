@@ -108,7 +108,7 @@ Structure
 3. Access the application in your web browser or on Postman etc.
 
 #### docker (OPTIONAL)
-Steps 1 & 2 are for context. Execute step 3 to build and run docker container
+Steps 1 & 2 are for context. Execute step 3 to build and run docker image
 
 1. Run the dockerfile to build image
 
