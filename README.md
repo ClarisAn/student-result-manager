@@ -76,7 +76,7 @@ Optional
     score VARCHAR ( 1 ) NOT NULL);
    ```
 
-8. SetUp Environment Variables. Create a file .env under 
+8. SetUp Environment Variables. Create a file .env
 
 ```bash
 dbName=pgName
