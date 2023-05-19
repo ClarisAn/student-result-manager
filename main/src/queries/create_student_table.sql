@@ -1,0 +1,6 @@
+CREATE TABLE students (
+	email VARCHAR ( 255 ) PRIMARY KEY,
+	firstName VARCHAR ( 255 ) UNIQUE NOT NULL,
+	surName VARCHAR ( 255 ) UNIQUE NOT NULL,
+	dob date NOT NULL
+);
