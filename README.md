@@ -110,17 +110,17 @@ Structure
 #### docker (OPTIONAL)
 Steps 1 & 2 are for context. Execute step 3 to build and run docker container
 
-1. Run the dockerfile to build container
+1. Run the dockerfile to build image
 
 ```bash
    docker build --tag python-docker .
 ```
-2. Run container
+2. Run docker image
 
 ```bash
     docker run -p 5050:5050 -d python-docker
 ```
-3. Run the docker-compose.yml as it creates
+3. Run the docker-compose.yml to create docker image
    
 ```bash
   docker-compose build
