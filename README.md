@@ -142,7 +142,7 @@ The Student Result Management System includes the following features:
    Different user roles with appropriate permissions.
 2. Functional tests
 3. Performance test
-4. "Dockerize" app to auto build tables for database
+4. App to auto build tables for database
 
 
 ### Contributing
