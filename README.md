@@ -52,7 +52,7 @@ Optional
 6. Set up the PostgreSQL database:
 
    - Create a new database in PostgreSQL.
-   - Update the database configuration with your PostgreSQL credentials and database information.
+   - Use new Postgres credentials in .env file
 
 7. Set up database:
    Create the database tables using the provided schemas
@@ -76,7 +76,7 @@ Optional
     score VARCHAR ( 1 ) NOT NULL);
    ```
 
-8. SetUp Environment Variables. Create a file .env
+8. SetUp Environment Variables. Create a file .env under 
 
 ```bash
 dbName=pgName
@@ -95,7 +95,7 @@ Structure
 ### Usage
 
 #### bash
-1. Start the Flask development server:
+1. Start the Flask App:
 
    ```bash
    python3 app.py
@@ -103,7 +103,7 @@ Structure
 
 2. By default, the application will run on `http://localhost:5050/`.
 
-3. Access the application in your web browser.
+3. Access the application in your web browser or on Postman etc.
 
 #### docker (OPTIONAL)
 
@@ -116,8 +116,7 @@ Structure
 ```bash
     docker run -p 5050:5050 -d python-docker
 ```
-3. However, run the docker-compose.yml file
-to use env variables in docker container
+3. Alternatively, run the docker-compose.yml
    
 ```bash
   docker-compose build
@@ -144,7 +143,7 @@ Contributions are welcome! If you find any issues or want to enhance the applica
    Different user roles with appropriate permissions.
 2. Functional tests
 3. Performance test
-4. "Dockerize" app to include postgres image
+4. "Dockerize" app to include PostgresSQL/SQLLite etc. image
 
 
 ### Contact
