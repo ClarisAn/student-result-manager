@@ -3,7 +3,9 @@ import datetime
 import re
 import logging
 from main.src.database.database import Database
+from dotenv import load_dotenv
 
+load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 
@@ -44,11 +46,11 @@ class StudentManager():
             # Call the database class
             logging.info("Calling database connector class...")
 
-            database = Database(user=os.environ['dbUserName'],
-                                password=os.environ['dbPwd'],
-                                host=os.environ['dbHost'],
-                                port=os.environ['dbPort'],
-                                database=os.environ['dbName'],
+            database = Database(user=os.getenv('dbUserName'),
+                                password=os.getenv('dbPwd'),
+                                host=os.getenv('dbHost'),
+                                port=os.getenv('dbPort'),
+                                database=os.getenv('dbName'),
                                 reconnect="False")
             try:
                 database.execute(
@@ -71,11 +73,11 @@ class StudentManager():
 
         # Call the database class
         logging.info("Calling database connector class...")
-        database = Database(user=os.environ['dbUserName'],
-                            password=os.environ['dbPwd'],
-                            host=os.environ['dbHost'],
-                            port=os.environ['dbPort'],
-                            database=os.environ['dbName'],
+        database = Database(user=os.getenv('dbUserName'),
+                            password=os.getenv('dbPwd'),
+                            host=os.getenv('dbHost'),
+                            port=os.getenv('dbPort'),
+                            database=os.getenv('dbName'),
                             reconnect="False")
 
         try:
@@ -102,11 +104,11 @@ class StudentManager():
         if self.sanitize_email(email):
             # Call the database class
             logging.info("Calling database connector class...")
-            database = Database(user=os.environ['dbUserName'],
-                                password=os.environ['dbPwd'],
-                                host=os.environ['dbHost'],
-                                port=os.environ['dbPort'],
-                                database=os.environ['dbName'],
+            database = Database(user=os.getenv('dbUserName'),
+                                password=os.getenv('dbPwd'),
+                                host=os.getenv('dbHost'),
+                                port=os.getenv('dbPort'),
+                                database=os.getenv('dbName'),
                                 reconnect="False")
             try:
                 database.execute("DELETE FROM students WHERE email = '{}';".format(email))

@@ -7,14 +7,16 @@ from psycopg2.extras import RealDictCursor
 import time
 import logging
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
-user = os.environ['dbUserName']
-password = os.environ['dbPwd']
-host = os.environ['dbHost']
-port = os.environ['dbPort']
-database = os.environ['dbName']
+user = os.getenv('dbUserName')
+password = os.getenv('dbPwd')
+host = os.getenv('dbHost')
+port = os.getenv('dbPort')
+database = os.getenv('dbName')
 LIMIT_RETRIES = 3
 
 

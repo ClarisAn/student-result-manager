@@ -7,23 +7,24 @@ from main.src.models.studentManagement import StudentManager
 from main.src.database.database import Database
 from main.src.models.courseManagement import CourseManager
 from main.src.models.resultManagement import ResultsManager
+from dotenv import load_dotenv
 
 # Declare class in order to test functions in class
-
 student_manager = StudentManager()
 course_manager = CourseManager()
 result_manager = ResultsManager()
+load_dotenv()
 
 
 class Test(unittest.TestCase):
     # Unit Tests for Database Class
 
     def test_connection(self):
-        database = Database(user=os.environ['dbUserName'],
-                            password=os.environ['dbPwd'],
-                            host=os.environ['dbHost'],
-                            port=os.environ['dbPort'],
-                            database=os.environ['dbName'],
+        database = Database(user=os.getenv('dbUserName'),
+                            password=os.getenv('dbPwd'),
+                            host=os.getenv('dbHost'),
+                            port=os.getenv('dbPort'),
+                            database=os.getenv('dbName'),
                             reconnect="False")
 
         result = database.connect(retry_counter=0)
@@ -31,11 +32,11 @@ class Test(unittest.TestCase):
         self.assertIsNone(result)
 
     def test_query(self):
-        database = Database(user=os.environ['dbUserName'],
-                            password=os.environ['dbPwd'],
-                            host=os.environ['dbHost'],
-                            port=os.environ['dbPort'],
-                            database=os.environ['dbName'],
+        database = Database(user=os.getenv('dbUserName'),
+                            password=os.getenv('dbPwd'),
+                            host=os.getenv('dbHost'),
+                            port=os.getenv('dbPort'),
+                            database=os.getenv('dbName'),
                             reconnect="False")
 
         result = database.execute("SELECT * FROM results WHERE id = '';")

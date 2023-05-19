@@ -1,7 +1,9 @@
 import os
 import logging
 from main.src.database.database import Database
+from dotenv import load_dotenv
 
+load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 
@@ -30,11 +32,11 @@ class CourseManager():
             # Call the database class
             logging.info("Calling database connector class...")
 
-            database = Database(user=os.environ['dbUserName'],
-                                password=os.environ['dbPwd'],
-                                host=os.environ['dbHost'],
-                                port=os.environ['dbPort'],
-                                database=os.environ['dbName'],
+            database = Database(user=os.getenv('dbUserName'),
+                                password=os.getenv('dbPwd'),
+                                host=os.getenv('dbHost'),
+                                port=os.getenv('dbPort'),
+                                database=os.getenv('dbName'),
                                 reconnect="False")
             try:
                 database.execute(
@@ -55,11 +57,11 @@ class CourseManager():
         # Call the database class
         logging.info("Calling database connector class...")
 
-        database = Database(user=os.environ['dbUserName'],
-                            password=os.environ['dbPwd'],
-                            host=os.environ['dbHost'],
-                            database=os.environ['dbName'],
-                            port=os.environ['dbPort'],
+        database = Database(user=os.getenv('dbUserName'),
+                            password=os.getenv('dbPwd'),
+                            host=os.getenv('dbHost'),
+                            database=os.getenv('dbName'),
+                            port=os.getenv('dbPort'),
                             reconnect="False")
         try:
             data = database.execute_result("SELECT course, code FROM courses;")
@@ -83,11 +85,11 @@ class CourseManager():
             # Call the database class
             logging.info("Calling database connector class...")
 
-            database = Database(user=os.environ['dbUserName'],
-                                password=os.environ['dbPwd'],
-                                host=os.environ['dbHost'],
-                                database=os.environ['dbName'],
-                                port=os.environ['dbPort'],
+            database = Database(user=os.getenv('dbUserName'),
+                                password=os.getenv('dbPwd'),
+                                host=os.getenv('dbHost'),
+                                database=os.getenv('dbName'),
+                                port=os.getenv('dbPort'),
                                 reconnect="False")
             try:
                 database.execute("DELETE FROM courses WHERE code = '{}';".format(code))
