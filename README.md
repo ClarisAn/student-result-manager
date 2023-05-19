@@ -137,8 +137,8 @@ The Student Result Management System includes the following features:
 
 ### Future Features 
 
-1. User Authentication (0Auth2)
-   User registration and login functionality to ensure secure access.
+1. 0Auth2
+   - User registration and login functionality to ensure secure access.
    Different user roles with appropriate permissions.
 2. Functional tests
 3. Performance test
