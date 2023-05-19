@@ -1,6 +1,0 @@
-PYTHONUNBUFFERED=1
-dbName=postgres
-dbPwd=***
-dbUserName=postgres
-dbHost=localhost
-dbPort=5433
