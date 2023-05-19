@@ -36,10 +36,15 @@ class CourseManager():
                                 port=os.environ['dbPort'],
                                 database=os.environ['dbName'],
                                 reconnect="False")
+            try:
+                database.execute(
+                    "INSERT INTO courses(code, course) VALUES('{}', '{}');".format(code, course))
+                database.close()
+            except Exception as error:
+                logging.error(error)
+                response['message'] = "Query failed to execute. Check logs"
+                response['status'] = 'FAILED'
 
-            database.execute(
-                "INSERT INTO courses(code, course) VALUES('{}', '{}');".format(code, course))
-            database.close()
         logging.info("EXITING create_student_info")
         return response
 
@@ -56,9 +61,14 @@ class CourseManager():
                             database=os.environ['dbName'],
                             port=os.environ['dbPort'],
                             reconnect="False")
-
-        data = database.execute_result("SELECT course FROM courses;")
-        response["message"] = data
+        try:
+            data = database.execute_result("SELECT course, code FROM courses;")
+            response["message"] = data
+            database.close()
+        except Exception as error:
+            logging.error(error)
+            response['message'] = "Query failed to execute. Check logs"
+            response["status"] = "FAILED"
         logging.info("EXITING get_all_student_info")
         return response
 
@@ -79,9 +89,14 @@ class CourseManager():
                                 database=os.environ['dbName'],
                                 port=os.environ['dbPort'],
                                 reconnect="False")
-
-            database.execute("DELETE FROM courses WHERE code = '{}';".format(code))
-            database.execute("DELETE FROM results WHERE code = '{}';".format(code))
+            try:
+                database.execute("DELETE FROM courses WHERE code = '{}';".format(code))
+                database.execute("DELETE FROM results WHERE code = '{}';".format(code))
+                database.close()
+            except Exception as error:
+                logging.error(error)
+                response['message'] = "Query failed to execute. Check logs"
+                response["status"] = "FAILED"
         else:
             response["status"] = "FAILED"
             response["message"] = "Course Code is Not Valid"

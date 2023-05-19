@@ -43,26 +43,17 @@ class ResultsManager():
 
                 student = name + ' ' + surname
                 id = str(uuid.uuid4())
-                logging.debug("About to execute: {}".format('''INSERT INTO results(id, email, course, code, student, score) 
-                    VALUES('{}','{}', '{}', '{}', '{}', '{}');'''.format(
-                    id,
-                    email,
-                    course,
-                    code,
-                    student,
-                    score)))
-
-                database.execute(
-                    '''INSERT INTO results(id, email, course, code, student, score) 
-                    VALUES('{}','{}', '{}', '{}', '{}', '{}');'''.format(
-                        id,
-                        email,
-                        course,
-                        code,
-                        student,
-                        score))
-                database.close()
-
+                SQL = '''INSERT INTO results(id, email, course, code, student, score) 
+                VALUES('{}','{}', '{}', '{}', '{}', '{}');'''.format(
+                    id, email, course, code, student, score)
+                logging.debug("About to execute: {}".format(SQL))
+                try:
+                    database.execute('''{}'''.format(SQL))
+                    database.close()
+                except Exception as error:
+                    logging.error(error)
+                    response['message'] = "Query failed to execute. Check logs"
+                    response['status'] = 'FAILED'
             else:
                 response['message'] = 'Invalid score provided'
         else:
@@ -77,16 +68,20 @@ class ResultsManager():
 
         # Call the database class
         logging.info("Calling database connector class...")
+        try:
+            database = Database(user=os.environ['dbUserName'],
+                                password=os.environ['dbPwd'],
+                                host=os.environ['dbHost'],
+                                port=os.environ['dbPort'],
+                                database=os.environ['dbName'],
+                                reconnect="False")
+            response['message'] = database.execute_result("SELECT course,student,score FROM results;")
+            database.close()
+        except Exception as error:
+            logging.error(error)
+            response['message'] = "Query failed to execute. Check logs"
+            response['status'] = 'FAILED'
 
-        database = Database(user=os.environ['dbUserName'],
-                            password=os.environ['dbPwd'],
-                            host=os.environ['dbHost'],
-                            port=os.environ['dbPort'],
-                            database=os.environ['dbName'],
-                            reconnect="False")
-
-        response['message'] = database.execute_result("SELECT course,student,score FROM results;")
-        database.close()
         logging.info("EXITING get_all_results")
         return response
 
@@ -103,17 +98,22 @@ class ResultsManager():
                             database=os.environ['dbName'],
                             port=os.environ['dbPort'],
                             reconnect="False")
-
-        data = database.execute_result(
-            "SELECT * FROM students WHERE LOWER(email)=LOWER('{}') AND LOWER(firstname)=LOWER('{}') "
-            "and LOWER(surname)=LOWER('{}') ;".format(email,
-                                                      name,
-                                                      surname))
-
-        if len(data) != 1:
-            logging.error("Student does not exist or more than one user. Use email for search.")
-            response['message'] = "Student does not exist or more than one user. Use email for search."
+        try:
+            data = database.execute_result(
+                "SELECT * FROM students WHERE LOWER(email)=LOWER('{}') AND LOWER(firstname)=LOWER('{}') "
+                "and LOWER(surname)=LOWER('{}') ;".format(email,
+                                                          name,
+                                                          surname))
+            database.close()
+            if len(data) != 1:
+                logging.error("Student does not exist or more than one user. Use email for search.")
+                response['message'] = "Student does not exist or more than one user. Use email for search."
+                response['status'] = 'FAILED'
+        except Exception as error:
+            logging.error(error)
+            response['message'] = "Query failed to execute. Check logs"
             response['status'] = 'FAILED'
+
         logging.info("EXITING check_student_exists")
         return response
 
@@ -130,14 +130,20 @@ class ResultsManager():
                             database=os.environ['dbName'],
                             port=os.environ['dbPort'],
                             reconnect="False")
+        try:
+            data = database.execute_result(
+                "SELECT * FROM courses WHERE UPPER(code)=UPPER('{}') AND LOWER(course)=LOWER('{}') ;".format(code,
+                                                                                                             course))
+            database.close()
+            if len(data) >= 1:
+                logging.error("Course exists")
+                response['status'] = 'SUCCESS'
+                response['message'] = ''
+        except Exception as error:
+            logging.error(error)
+            response['message'] = "Query failed to execute. Check logs"
+            response['status'] = 'FAILED'
 
-        data = database.execute_result(
-            "SELECT * FROM courses WHERE UPPER(code)=UPPER('{}') AND LOWER(course)=LOWER('{}') ;".format(code, course))
-
-        if len(data) >= 1:
-            logging.error("Course exists")
-            response['status'] = 'SUCCESS'
-            response['message'] = ''
         logging.info("EXITING check_course_exists")
         return response
 
@@ -154,13 +160,19 @@ class ResultsManager():
                             database=os.environ['dbName'],
                             port=os.environ['dbPort'],
                             reconnect="False")
-
-        data = database.execute_result(
-            "SELECT * FROM results WHERE UPPER(code)=UPPER('{}') AND LOWER(email)=LOWER('{}') ;".format(code, email))
-        logging.debug("There exists: {} entries".format(str(len(data))))
-        if len(data) >= 1:
-            logging.error("Result Already Exists.")
-            response['message'] = "Course does not exist."
+        try:
+            data = database.execute_result(
+                "SELECT * FROM results WHERE UPPER(code)=UPPER('{}') AND LOWER(email)=LOWER('{}') ;".format(code,
+                                                                                                            email))
+            database.close()
+            logging.debug("There exists: {} entries".format(str(len(data))))
+            if len(data) >= 1:
+                logging.error("Result Already Exists.")
+                response['message'] = "Course does not exist."
+                response['status'] = 'FAILED'
+        except Exception as error:
+            logging.error(error)
+            response['message'] = "Query failed to execute. Check logs"
             response['status'] = 'FAILED'
         logging.info("EXITING check_result_exists")
         return response

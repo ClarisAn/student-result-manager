@@ -50,13 +50,17 @@ class StudentManager():
                                 port=os.environ['dbPort'],
                                 database=os.environ['dbName'],
                                 reconnect="False")
-
-            database.execute(
-                "INSERT INTO students(email, firstname, surname, dob) VALUES('{}', '{}', '{}', '{}');".format(email,
-                                                                                                              username,
-                                                                                                              surname,
-                                                                                                              dateOfBirth))
-            database.close()
+            try:
+                database.execute(
+                    "INSERT INTO students(email, firstname, surname, dob) VALUES('{}', '{}', '{}', '{}');".format(email,
+                                                                                                                  username,
+                                                                                                                  surname,
+                                                                                                                  dateOfBirth))
+                database.close()
+            except Exception as error:
+                logging.error(error)
+                response['message'] = "Query failed to execute. Check logs"
+                response['status'] = 'FAILED'
 
         logging.info("EXITING create_student_info")
         return response
@@ -74,11 +78,17 @@ class StudentManager():
                             database=os.environ['dbName'],
                             reconnect="False")
 
-        data = database.execute_result("SELECT * FROM students;")
+        try:
+            data = database.execute_result("SELECT * FROM students;")
+            database.close()
 
-        for item in data:
-            item[3] = item[3].strftime("%Y-%m-%d")
-        response["message"] = data
+            for item in data:
+                item[3] = item[3].strftime("%Y-%m-%d")
+            response["message"] = data
+        except Exception as error:
+            logging.error(error)
+            response['message'] = "Query failed to execute. Check logs"
+            response['status'] = 'FAILED'
         logging.info("EXITING get_all_student_info")
         return response
 
@@ -87,7 +97,7 @@ class StudentManager():
         response = {"status": "SUCCESS", "message": ""}
         email = email.lower()
 
-        # Check that email is valid before deleting
+        # Check that email is valid before deleting student and result
 
         if self.sanitize_email(email):
             # Call the database class
@@ -98,11 +108,15 @@ class StudentManager():
                                 port=os.environ['dbPort'],
                                 database=os.environ['dbName'],
                                 reconnect="False")
+            try:
+                database.execute("DELETE FROM students WHERE email = '{}';".format(email))
+                database.execute("DELETE FROM results WHERE email = '{}';".format(email))
+                database.close()
+            except Exception as error:
+                logging.error(error)
+                response['message'] = "Query failed to execute. Check logs"
+                response['status'] = 'FAILED'
 
-            database.execute("DELETE FROM students WHERE email = '{}';".format(email))
-            database.execute("DELETE FROM results WHERE email = '{}';".format(email))
-
-            # Delete Students Results
         else:
             response["status"] = "FAILED"
             response["message"] = "Email is not valid"

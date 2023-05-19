@@ -86,7 +86,7 @@ class Database:
             retry_counter = 0
         except (psycopg2.DatabaseError, psycopg2.OperationalError) as error:
             if retry_counter >= LIMIT_RETRIES:
-                raise error
+                logging.error(str(error))
             else:
                 retry_counter += 1
                 logging.error("got error {}. retrying {}".format(str(error).strip(), retry_counter))
@@ -94,7 +94,7 @@ class Database:
                 self.reset()
                 self.execute_result(query, retry_counter)
         except (Exception, psycopg2.Error) as error:
-            raise error
+            logging.error(str(error))
         logging.info("EXITING execute_result")
         return self._cursor.fetchall()
 
@@ -114,7 +114,7 @@ class Database:
             retry_counter = 0
         except (psycopg2.DatabaseError, psycopg2.OperationalError) as error:
             if retry_counter >= LIMIT_RETRIES:
-                raise error
+                logging.error(str(error))
             else:
                 retry_counter += 1
                 logging.error("got error {}. retrying {}".format(str(error).strip(), retry_counter))
@@ -122,7 +122,7 @@ class Database:
                 self.reset()
                 self.execute_result(query, retry_counter)
         except (Exception, psycopg2.Error) as error:
-            raise error
+            logging.error(str(error))
         logging.info("EXITING execute")
 
     # Function that resets connections upon retry
