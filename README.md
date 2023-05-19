@@ -6,6 +6,15 @@ This is a README file for a Student Result Management System built using Flask a
 
 The Student Result Management System is a web-based application that allows users to manage and store student information, their courses and results. It is built using the Flask framework in Python 3 and utilizes a PostgreSQL database for data storage.
 
+
+## Prerequisites
+Before running the Flask app, make sure you have the following installed:
+
+- Python 3.x
+- Flask
+- PostgresSQL
+
+
 ### Installation
 
 1. Clone the repository:
@@ -43,8 +52,8 @@ The Student Result Management System is a web-based application that allows user
    - Create a new database in PostgreSQL.
    - Update the database configuration with your PostgreSQL credentials and database information.
 
-7. Create the database tables using the provided schemas:
-
+7. Set up database:
+   1. Create the database tables using the provided schemas
    ```sql
     CREATE TABLE students (
     email VARCHAR ( 255 ) PRIMARY KEY,
@@ -64,6 +73,13 @@ The Student Result Management System is a web-based application that allows user
     student  VARCHAR ( 255 ) NOT NULL,
     score VARCHAR ( 1 ) NOT NULL);
     ```
+   2. Or, run the following commands
+
+   ```bash
+   flask db init
+   flask db migrate
+   flask db upgrade
+   ```
 
 8. SetUp Environment Variables 
 
@@ -90,9 +106,16 @@ dbPort=5433
 #### docker
 
 1. Run the dockerfile
+
 ```bash
    docker run 
+```
 
+#### flask
+1.  Start the Flask development server:
+
+```bash
+flask run
 ```
 
 ### Features
@@ -101,12 +124,20 @@ The Student Result Management System includes the following features:
 
 - Student management: Add, view and delete student records. 
 - Result management:  Add, view and delete courses.
-- Course Managment:  Add and view student results
+- Course Managment:  Add and view student results.
 
 
 ### Contributing
 
 Contributions are welcome! If you find any issues or want to enhance the application, feel free to open a pull request.
+
+### Future Features 
+
+1. User Authentication (0Auth2)
+   User registration and login functionality to ensure secure access.
+   Different user roles with appropriate permissions.
+2. Functional tests
+3. Performance test
 
 
 ### Contact
