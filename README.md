@@ -108,7 +108,7 @@ Structure
 3. Access the application in your web browser or on Postman etc.
 
 #### docker (OPTIONAL)
-Note steps 1 & 2 are just for context. Execute step 3 to build and run docker container
+Steps 1 & 2 are for context. Execute step 3 to build and run docker container
 
 1. Run the dockerfile to build container
 
@@ -135,11 +135,6 @@ The Student Result Management System includes the following features:
 - Result management:  Add, view and delete courses.
 - Course Managment:  Add and view student results.
 
-
-### Contributing
-
-Contributions are welcome! If you find any issues or want to enhance the application, feel free to open a pull request.
-
 ### Future Features 
 
 1. User Authentication (0Auth2)
@@ -147,8 +142,12 @@ Contributions are welcome! If you find any issues or want to enhance the applica
    Different user roles with appropriate permissions.
 2. Functional tests
 3. Performance test
-4. "Dockerize" app to include PostgresSQL/SQLLite etc. image
+4. "Dockerize" app to auto build tables for database
 
+
+### Contributing
+
+Contributions are welcome! If you find any issues or want to enhance the application, feel free to open a pull request.
 
 ### Contact
 
